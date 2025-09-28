@@ -1,17 +1,23 @@
 name: MatrixStrategy
+
 on:
-   workflow_dispatch: 
+  workflow_dispatch:
 
 jobs:
-    deploy:
-        strategy:
-            matrix:
-               os: [ubuntu-latest, unbuntu-20.04,windows-latest]
-               images: [hello world,alpine]
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-20.04, windows-latest]
+        image: [hello-world, alpine]
 
-        runs-on: ${{matrix.os}}
-        steps:
-            - name: Echo Docker Details
-              run: docker info
-            - name: Run Images
-              run: docker run ${{matrix.images}}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Docker Info
+        run: docker info
+
+      - name: Run Docker Image
+        run: docker run ${{ matrix.image }}
